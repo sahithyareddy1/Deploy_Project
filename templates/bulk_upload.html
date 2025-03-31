@@ -1,0 +1,61 @@
+<!-- templates/bulk_upload.html -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Bulk Upload - SmartVoting</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.8.1/font/bootstrap-icons.css">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+</head>
+<body>
+    <nav class="navbar navbar-expand-lg navbar-dark bg-primary">
+        <div class="container">
+            <a class="navbar-brand" href="/">SmartVoting</a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav ms-auto">
+                    <li class="nav-item">
+                        <a class="nav-link" href="/"><i class="bi bi-house-door"></i> Home</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="/voters"><i class="bi bi-people"></i> Voters</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="/add_voter"><i class="bi bi-person-plus"></i> Add Voter</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link active" href="/bulk_upload"><i class="bi bi-upload"></i> Bulk Upload</a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <div class="container mt-4">
+        {% with messages = get_flashed_messages(with_categories=true) %}
+            {% if messages %}
+                {% for category, message in messages %}
+                    <div class="alert alert-{{ category if category != 'error' else 'danger' }} alert-dismissible fade show" role="alert">
+                        {{ message }}
+                        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                    </div>
+                {% endfor %}
+            {% endif %}
+        {% endwith %}
+
+        <div class="card">
+            <div class="card-header bg-primary text-white">
+                <h4 class="mb-0"><i class="bi bi-upload"></i> Bulk Upload Voters</h4>
+            </div>
+            <div class="card-body">
+                <form action="/bulk_upload" method="post" enctype="multipart/form-data" class="needs-validation" novalidate>
+                    <div class="mb-4">
+                        <h5>Instructions</h5>
+                        <ol>
+                            <li>Prepare a CSV file with columns: unique_id, ec_id, image_path</li>
+                            <li>Make sure all image paths are valid and accessible</li>
+                            <li>Upload the CSV file using
