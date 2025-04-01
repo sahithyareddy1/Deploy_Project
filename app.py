@@ -9,15 +9,15 @@ from werkzeug.security import generate_password_hash, check_password_hash
 from datetime import datetime
 import traceback
 import numpy as np
+from config import Config
 
 app = Flask(__name__)
-app.secret_key = secrets.token_hex(16)
+app.config.from_object(Config)
 
 def get_db_connection():
-    global client  # Declare client as global
+    global client
     try:
-        client = MongoClient('mongodb+srv://sahithyareddy:Sony%402023@smartvoting.kwhts.mongodb.net/?retryWrites=true&w=majority&appName=SmartVoting')
-        # Return only voting_data database
+        client = MongoClient(app.config['MONGO_URI'])
         voting_data_db = client['voting_data']
         return voting_data_db
     except Exception as e:
